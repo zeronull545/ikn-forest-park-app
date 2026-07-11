@@ -1,0 +1,610 @@
+{
+  "info": {
+    "_postman_id": "8fa8ccb4-7128-406e-8d54-1fb9c9223e7f",
+    "name": "IKN Forest Park Social API",
+    "description": "API requests for the IKN (Ibu Kota Nusantara) Forest Park Social Application built with Laravel, PostgreSQL (PostGIS), and Redis.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Andi Wijaya\",\n  \"email\": \"andi.wijaya@ikn.id\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"bio\": \"Pencinta petualangan hutan hujan Kalimantan\",\n  \"latitude\": -0.9619,\n  \"longitude\": 116.9856\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"bambang@ikn.go.id\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "logout"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forest Parks",
+      "item": [
+        {
+          "name": "List Forest Parks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/parks?search=Tahura&status=active",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "parks"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Tahura"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Nearby Parks (PostGIS)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/parks/nearby?latitude=-0.9619&longitude=116.9856&radius_km=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "parks",
+                "nearby"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-0.9619"
+                },
+                {
+                  "key": "longitude",
+                  "value": "116.9856"
+                },
+                {
+                  "key": "radius_km",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Forest Park Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/parks/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "parks",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Forest Park",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Samboja Lestari Forest\",\n  \"slug\": \"samboja-lestari-forest\",\n  \"description\": \"Rehabilitated rainforest area dedicated to saving orangutans and sun bears.\",\n  \"latitude\": -1.0421,\n  \"longitude\": 116.8923,\n  \"area_hectares\": 1850.00,\n  \"facilities\": [\"Orangutan Sanctuary\", \"Eco Lodge\", \"Canopy Walk\", \"Volunteering Center\"],\n  \"photos\": [\"https://images.unsplash.com/photo-1546182990-dffeafbe841d\"],\n  \"opening_hours\": {\n    \"weekday\": \"08:00 - 16:00\",\n    \"weekend\": \"08:00 - 16:00\"\n  },\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "parks"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Social Posts",
+      "item": [
+        {
+          "name": "List All Posts (FTS Search)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/posts?search=Kantong Semar&type=photo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "posts"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Kantong Semar"
+                },
+                {
+                  "key": "type",
+                  "value": "photo"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Social Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"park_id\": 2,\n  \"title\": \"Beautiful morning tracking Orangutans!\",\n  \"content\": \"Had the privilege of seeing a family of orangutans high up in the canopy at Sungai Wain. Amazing forest conservation effort by IKN!\",\n  \"photos\": [\"https://images.unsplash.com/photo-1534447677768-be436bb09401\"],\n  \"tags\": [\"orangutan\", \"nature\", \"sungaiwain\", \"ikn\"],\n  \"type\": \"photo\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "posts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Comment to Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Wow this is absolutely magnificent! Adding this to my weekend wishlist.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts/2/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "posts",
+                "2",
+                "comments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Toggle Like (Polymorphic)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"likeable_id\": 2,\n  \"likeable_type\": \"Post\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/likes/toggle",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "likes",
+                "toggle"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Park Visits",
+      "item": [
+        {
+          "name": "Check-in or Log Visit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"park_id\": 3,\n  \"visited_at\": \"2026-07-11T07:30:00Z\",\n  \"rating\": 5,\n  \"notes\": \"Had a great family picnic near the retention lake. Highly recommended!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/visits",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "visits"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Visit History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/visits/history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "history"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Social Connections",
+      "item": [
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/2/follow",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "2",
+                "follow"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/2/unfollow",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "2",
+                "unfollow"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notifications as Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [1, 2]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notifications/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "notifications",
+                "read"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "YOUR_SANCTUM_TOKEN_HERE",
+      "type": "string"
+    }
+  ]
+}
